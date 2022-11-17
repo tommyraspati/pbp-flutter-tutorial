@@ -1,4 +1,6 @@
-import 'package:flutter_lab/main.dart';
+import 'package:flutter_lab/page/to_do_page.dart';
+
+import '../main.dart';
 import 'package:flutter/material.dart';
 
 class MyFormPage extends StatefulWidget {
@@ -11,32 +13,29 @@ class MyFormPage extends StatefulWidget {
 class _MyFormPageState extends State<MyFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _namaLengkap = "";
+
   bool jenjangSarjana = false;
   bool jenjangDiploma = false;
   bool jenjangMagister = false;
   bool jenjangDoktor = false;
+
   double umur = 0;
+
   String kelasPBP = 'A';
   List<String> listKelasPBP = ['A', 'B', 'C', 'D', 'E', 'F', 'KI'];
+
   bool _nilaiSwitch = false;
 
-  String _jenjang() {
-    if (jenjangDiploma) {
+  String _showJenjang() {
+    if (jenjangDiploma == true) {
       return "Diploma";
-    } else if (jenjangDoktor) {
+    } else if (jenjangDoktor == true) {
       return "Doktor";
-    } else if (jenjangMagister) {
+    } else if (jenjangMagister == true) {
       return "Magister";
     } else {
       return "Sarjana";
     }
-  }
-
-  String _practiceMode() {
-    if (_nilaiSwitch) {
-      return "Iya";
-    }
-    return "Tidak";
   }
 
   @override
@@ -66,6 +65,16 @@ class _MyFormPageState extends State<MyFormPage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const MyFormPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('To Do'),
+              onTap: () {
+                // Route menu ke halaman to do
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ToDoPage()),
                 );
               },
             ),
@@ -258,12 +267,20 @@ class _MyFormPageState extends State<MyFormPage> {
                                 children: <Widget>[
                                   Center(child: const Text('Informasi Data')),
                                   SizedBox(height: 20),
-                                 // TODO: Munculkan informasi yang didapat dari form
-                                  Text('Nama Lengkap: ' + _namaLengkap, textAlign: TextAlign.center),
-                                  Text('Jenjang: ' + _jenjang(),textAlign: TextAlign.center),
-                                  Text('Umur: $umur',textAlign: TextAlign.center),
-                                  Text('Kelas: ' + kelasPBP, textAlign: TextAlign.center),
-                                  Text('Practice Mode: ' + _practiceMode(), textAlign: TextAlign.center),
+                                  // TODO: Munculkan informasi yang didapat dari form
+                                  Center(child: Text('Nama: ' + _namaLengkap)),
+                                  Center(
+                                      child:
+                                          Text('Jenjang: ' + _showJenjang())),
+                                  Center(
+                                      child: Text(
+                                          'Umur: ' + umur.toInt().toString())),
+                                  Center(child: Text('Kelas: ' + kelasPBP)),
+                                  _nilaiSwitch == true
+                                      ? Center(child: Text('Practice: ' + "On"))
+                                      : Center(
+                                          child: Text('Practice: ' + "Off")),
+                                  SizedBox(height: 10),
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
